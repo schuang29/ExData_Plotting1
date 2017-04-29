@@ -115,6 +115,10 @@ The four plots that you will need to construct are shown below.
 
 ## Solution
 There are four scripts that generates the above plots
+* [plot1.R](https://github.com/schuang29/ExploringData_Plotting_Project1/blob/master/plot1.R)
+* [plot2.R](https://github.com/schuang29/ExploringData_Plotting_Project1/blob/master/plot2.R)
+* [plot3.R](https://github.com/schuang29/ExploringData_Plotting_Project1/blob/master/plot3.R)
+* [plot3.R](https://github.com/schuang29/ExploringData_Plotting_Project1/blob/master/plot4.R)
 
 Besides the plotting, the script has commonality in the i/o processing and data preparation.
 ### Source the data
@@ -238,6 +242,6 @@ plot(plotData$Global_reactive_power~plotData$SetTime,
 
 Copy the plot and save to file
 ```R
-dev.copy(png,"plot3.png", width=480, height=480)
+dev.copy(png,"plot4.png", width=480, height=480)
 dev.off()
 ```
