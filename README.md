@@ -112,3 +112,132 @@ The four plots that you will need to construct are shown below.
 
 ![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5.png) 
 
+
+## Solution
+There are four scripts that generates the above plots
+
+Besides the plotting, the script has commonality in the i/o processing and data preparation.
+### Source the data
+
+#### Housekeeping
+First set the working directory
+```R
+setwd("D:/GitHub/ExData_Plotting1")
+```
+
+#### Download file, if it hasn't already been completed
+```R
+fileUrl <- "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip"
+download.file(fileUrl, destfile = "./Course3Week4Assign1/Course3Week4Assign1.zip", mode = "wb")
+if(!file.exists("Project1.zip")){download.file(fileUrl, destfile = "Project1.zip", mode = "wb")}
+```
+
+#### Unzip the file
+```R
+unzip("Project1.zip")
+```
+
+#### Read data into a table
+```R
+data <- read.table("household_power_consumption.txt", 
+                   header=T, 
+                   sep=";", 
+                   na.strings="?")
+```
+
+#### Create a datetime variable and add to the table
+```R
+plotData <- data[data$Date %in% c("1/2/2007","2/2/2007"),]
+SetTime <-strptime(paste(plotData$Date, plotData$Time, sep=" "),"%d/%m/%Y %H:%M:%S")
+plotData <- cbind(SetTime, plotData)
+```
+
+#### Plot 1 - Frequency of Global Active Power
+The following creates this plot:
+```R
+hist(plotData$Global_active_power, col="red", main="Global Active Power", xlab="Global Active Power (kilowatts)")
+```
+
+![plot 1](plot1.png)
+
+Copy the plot and save to file
+```R
+dev.copy(png,"plot1.png", width=480, height=480)
+dev.off()
+```
+
+#### Plot 2 - Global Active Power over Days
+The following creates this plot:
+```R
+plot(plotData$Global_active_power~plotData$SetTime, 
+     type="l", 
+     ylab="Global Active Power (kilowatts)", 
+     xlab="Day")
+```
+
+![plot 2](plot2.png)
+
+Copy the plot and save to file
+```R
+dev.copy(png,"plot2.png", width=480, height=480)
+dev.off()
+```
+
+#### Plot 3 - Submetering over time
+The following creates this plot:
+```R
+plot(plotData$SetTime, plotData$Sub_metering_1, type="l", col="black", xlab="", ylab="Energy sub metering")
+lines(plotData$SetTime, plotData$Sub_metering_2, col="red")
+lines(plotData$SetTime, plotData$Sub_metering_3, col="blue")
+legend("topright", 
+       legend=c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), 
+       col=c("black", "red", "blue"), 
+       lty="solid")
+```
+
+![plot 3](plot3.png)
+
+Copy the plot and save to file
+```R
+dev.copy(png,"plot3.png", width=480, height=480)
+dev.off()
+```
+
+#### Plot 4 - Collage
+The following creates this plot:
+```R
+par(mfrow=c(2,2), mar=c(4,4,2,1), oma=c(0,0,2,0))
+
+plot(plotData$Global_active_power~plotData$SetTime, 
+     type="l", 
+     ylab="Global Active Power (kilowatts)", 
+     xlab="")
+
+plot(plotData$Voltage~plotData$SetTime, 
+     type="l", 
+     ylab="Voltage", 
+     xlab="datetime")
+
+plot(plotData$SetTime, plotData$Sub_metering_1, type="l", col="black", xlab="", ylab="Energy sub metering")
+lines(plotData$SetTime, plotData$Sub_metering_2, col="red")
+lines(plotData$SetTime, plotData$Sub_metering_3, col="blue")
+legend("topright", 
+       legend=c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), 
+       col=c("black", "red", "blue"),
+       lty=1, 
+       lwd=1,
+       bty = "n")
+
+plot(plotData$Global_reactive_power~plotData$SetTime, 
+    type="l", 
+    ylab="Global_reactive_power", 
+    xlab="datetime")   
+```
+
+![plot 4](plot4.png)
+
+Copy the plot and save to file
+```R
+dev.copy(png,"plot3.png", width=480, height=480)
+dev.off()
+```
